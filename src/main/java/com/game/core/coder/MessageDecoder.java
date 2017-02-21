@@ -51,7 +51,7 @@ public class MessageDecoder extends MessageToMessageDecoder<ByteBuf> {
 				}
 			}
 		}
-		System.out.println("===decoder==="+message.getName());
+		System.out.println("===decoder==="+message.getParams());
 		out.add(message);
 	}
 

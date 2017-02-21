@@ -1,5 +1,6 @@
 package com.game.core.net;
 
+import com.game.core.ControllerDispatcher;
 import com.game.core.Message;
 
 import io.netty.channel.ChannelFuture;
@@ -17,18 +18,7 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-    	Message msgMessage = new Message();
-    	msgMessage.setControllerId(10001);
-    	msgMessage.setName("connected");
-    	final ChannelFuture f = ctx.writeAndFlush(msgMessage); // (3)
-  
-        /*f.addListener(new ChannelFutureListener() {
-            public void operationComplete(ChannelFuture future) {
-                assert f == future;
-                ctx.close();
-            }
-        }); // (4)
-*/        
+    	
 	}
 
     @Override
@@ -36,10 +26,13 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
 			throws Exception {
     	
     	Message msg1 = (Message)msg;
-    	System.out.println(msg1.getControllerId()+":"+msg1.getName());
+    	
+    	ControllerDispatcher.getInstance().doDispatcher(msg1.getControllerId(), msg1.getActionId(), msg1.getParams());
+    	
+/*    	System.out.println(msg1.getControllerId()+":"+msg1.getParams());
     	Message msgMessage = new Message();
-    	msgMessage.setName("from server");
-    	ctx.writeAndFlush(msgMessage);
+    	msgMessage.setParams("from server");
+    	ctx.writeAndFlush(msgMessage);*/
 	}
 
 	@Override
