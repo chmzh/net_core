@@ -1,4 +1,4 @@
-package com.game.test;
+package com.game.cache.test;
 
 import com.game.cache.AbstractCacheable;
 

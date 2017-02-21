@@ -53,7 +53,7 @@ public class CacheManager {
 		 return MAPS.get(name);
 	}
 	
-	public static <E extends Cacheable> ConcurrentLinkedListCache<E> getConcurrentLinkedCache(String name){
+	public static <E extends Cacheable> ConcurrentLinkedListCache<E> getConcurrentLinkedListCache(String name){
 		LISTS.putIfAbsent(name, new ConcurrentLinkedListCache<E>(name));
 		return LISTS.get(name);
 	}

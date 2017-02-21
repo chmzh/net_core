@@ -13,8 +13,8 @@ public class ConcurrentLinkedListCache<E extends Cacheable> {
 		store.offer(e);
 		
 	}
-	public void get(){
-		store.poll();
+	public E peek(){
+		return store.peek();
 	}
 	public String getName() {
 		// TODO Auto-generated method stub
