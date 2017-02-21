@@ -18,16 +18,17 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelActive(final ChannelHandlerContext ctx) throws Exception {
     	Message msgMessage = new Message();
+    	msgMessage.setControllerId(10001);
     	msgMessage.setName("connected");
-    	/* 	final ChannelFuture f = ctx.writeAndFlush(msgMessage); // (3)
+    	final ChannelFuture f = ctx.writeAndFlush(msgMessage); // (3)
   
-        f.addListener(new ChannelFutureListener() {
+        /*f.addListener(new ChannelFutureListener() {
             public void operationComplete(ChannelFuture future) {
                 assert f == future;
                 ctx.close();
             }
         }); // (4)
-        */
+*/        
 	}
 
     @Override
@@ -35,7 +36,7 @@ public class GameServerHandler extends ChannelInboundHandlerAdapter {
 			throws Exception {
     	
     	Message msg1 = (Message)msg;
-    	System.out.println(msg1.getName());
+    	System.out.println(msg1.getControllerId()+":"+msg1.getName());
     	Message msgMessage = new Message();
     	msgMessage.setName("from server");
     	ctx.writeAndFlush(msgMessage);
