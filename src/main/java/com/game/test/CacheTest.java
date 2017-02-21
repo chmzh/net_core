@@ -8,6 +8,7 @@ public class CacheTest {
 	private final static ConcurrentMapCache<String,User> CACHE_MANAGER = CacheManager.getConcurrentMapCache("user");
 	
 	public static void main(String[] args) {
+		CacheManager.start();
 		put();
 		print();
 		modify();

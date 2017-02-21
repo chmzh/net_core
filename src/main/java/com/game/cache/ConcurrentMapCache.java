@@ -1,5 +1,6 @@
 package com.game.cache;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -26,10 +27,15 @@ public class ConcurrentMapCache<K,V extends Cacheable> implements Cache<K,V> {
 
 	@Override
 	public void evict() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("缓存大小:"+store.size());
+		for (Map.Entry<K, V> entry : store.entrySet()) {
+			System.out.println(entry.getValue().getLifeTime());
+			if(!entry.getValue().isLife()){
+				store.remove(entry.getKey());
+				System.out.println(entry.getValue()+"被移除");
+			}
+		}
 	}
-
 
 	@Override
 	public String getName() {

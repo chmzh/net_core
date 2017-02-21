@@ -19,8 +19,8 @@ public abstract class AbstractCacheable implements Cacheable {
 	}
 
 	@Override
-	public int getLifeTime() {
-		return lifeTime;
+	public long getLifeTime() {
+		return now() - createTime;
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public abstract class AbstractCacheable implements Cacheable {
 		return (now() - createTime) < lifeTime;
 	}
 	
-	private long now(){
+	public long now(){
 		return System.currentTimeMillis();
 	}
 }

@@ -13,7 +13,7 @@ public interface Cacheable {
 	 */
 	void setLifeTime(int lifeTime);
 	
-	int getLifeTime();
+	long getLifeTime();
 	
 	/**
 	 * 是否可以存活下来
