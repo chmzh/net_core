@@ -7,8 +7,9 @@ import com.game.core.Message;
 public class CacheTest {
 	private final static ConcurrentMapCache<String,User> CACHE_MANAGER = CacheManager.getConcurrentMapCache("user");
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		CacheManager.start();
+		Thread.sleep(7000);
 		put();
 		print();
 		modify();

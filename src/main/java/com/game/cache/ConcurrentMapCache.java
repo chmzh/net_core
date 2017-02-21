@@ -27,12 +27,12 @@ public class ConcurrentMapCache<K,V extends Cacheable> implements Cache<K,V> {
 
 	@Override
 	public void evict() {
-		System.out.println("缓存大小:"+store.size());
+		//System.out.println("缓存大小:"+store.size());
 		for (Map.Entry<K, V> entry : store.entrySet()) {
-			System.out.println(entry.getValue().getLifeTime());
+			//System.out.println(entry.getValue().getLifeTime());
 			if(!entry.getValue().isLife()){
 				store.remove(entry.getKey());
-				System.out.println(entry.getValue()+"被移除");
+				//System.out.println(entry.getValue()+"被移除");
 			}
 		}
 	}

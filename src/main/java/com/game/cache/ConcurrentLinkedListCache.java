@@ -2,11 +2,11 @@ package com.game.cache;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ConcurrentLinkedCache<E> {
+public class ConcurrentLinkedListCache<E extends Cacheable> {
 	private String name;
 	private ConcurrentLinkedQueue<E> store;
 	
-	public ConcurrentLinkedCache(String name){
+	public ConcurrentLinkedListCache(String name){
 		store = new ConcurrentLinkedQueue<E>();
 	}
 	public void add(E e) {
@@ -21,4 +21,11 @@ public class ConcurrentLinkedCache<E> {
 		return name;
 	}
 	
+	public void evict(){
+		for(E e: store){
+			if(!e.isLife()){
+				store.remove(e);
+			}
+		}
+	}
 }

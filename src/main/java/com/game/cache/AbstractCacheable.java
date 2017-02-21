@@ -20,7 +20,7 @@ public abstract class AbstractCacheable implements Cacheable {
 
 	@Override
 	public long getLifeTime() {
-		return now() - createTime;
+		return lifeTime;
 	}
 
 	@Override
