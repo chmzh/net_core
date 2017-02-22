@@ -37,12 +37,13 @@ class AsyncDBTaskManager {
 	 */
 	private static void run(){
 		AsyncDbObj obj = null;
+		boolean bol = false;
 		try {
 			obj = queue.peek();
 			if(obj==null){
 				return;
 			}
-			boolean bol = obj.asyncUpdate();
+			bol = obj.asyncUpdate();
 			if(!bol){
 				//FileUtil.append(obj.getNum()+spliter+getSql(obj), obj.getDate()+"recoder_err.sql");
 				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_err.sql");
@@ -51,14 +52,20 @@ class AsyncDBTaskManager {
 				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_suc.sql");
 			}
 		} catch (Exception e) {
-			//TODO报警 通知管理员
 			if(obj!=null){
+				obj.incrementCommitCount();
 				//FileUtil.append(obj.getNum()+spliter+getSql(obj), obj.getDate()+"_recoder_err.sql");
-				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_err.sql");
 			}
 		}finally{
 			if(obj!=null){
-				queue.remove();
+				if(bol==true || (!bol && obj.getCommitCount()>=3)){
+					queue.remove();
+				}
+				if(!bol && obj.getCommitCount()>=3){
+					//TODO报警 通知管理员
+					
+					FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_err.sql");
+				}
 			}
 		}
 		

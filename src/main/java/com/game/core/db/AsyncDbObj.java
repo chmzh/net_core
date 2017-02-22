@@ -25,4 +25,8 @@ public interface AsyncDbObj {
 	public void setDate(String date);
 	
 	public String getDate();
+	
+	public void incrementCommitCount();
+	
+	public int getCommitCount();
 }

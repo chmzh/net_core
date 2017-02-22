@@ -9,7 +9,7 @@ public abstract class AbstractAsyncDbObject implements AsyncDbObj {
 	protected String updateFileds;
 	private long num;
 	private String date;
-	
+	private int commitCount;
 	@Override
 	public void setDate(String date) {
 		this.date = date;
@@ -93,5 +93,17 @@ public abstract class AbstractAsyncDbObject implements AsyncDbObj {
 	public String getSql() {
 		return sql;
 	}
+	
+	
+	@Override
+	public void incrementCommitCount() {
+		// TODO Auto-generated method stub
+		commitCount = commitCount+1;
+	}
 
+	@Override
+	public int getCommitCount() {
+		// TODO Auto-generated method stub
+		return commitCount;
+	}
 }
