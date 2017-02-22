@@ -8,7 +8,17 @@ public abstract class AbstractAsyncDbObject implements AsyncDbObj {
 	protected String sql;
 	protected String updateFileds;
 	private long num;
+	private String date;
 	
+	@Override
+	public void setDate(String date) {
+		this.date = date;
+	}
+	@Override
+	public String getDate() {
+		// TODO Auto-generated method stub
+		return date;
+	}
 	
 	@Override
 	public long getNum() {

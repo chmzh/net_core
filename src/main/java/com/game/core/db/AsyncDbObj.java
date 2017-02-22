@@ -21,4 +21,8 @@ public interface AsyncDbObj {
 	 * @return
 	 */
 	public long getNum();
+	
+	public void setDate(String date);
+	
+	public String getDate();
 }
