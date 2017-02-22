@@ -1,16 +1,24 @@
 package com.game.core.db;
 
+import java.util.Spliterator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
+import com.game.core.utils.FileUtil;
 
 class AsyncDBTaskManager {
+	
+	private final static String spliter = "@*@#(@)";
 	
 	private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 	
 	private final static LinkedBlockingQueue<AsyncDbObj> queue = new LinkedBlockingQueue<AsyncDbObj>();
-
+	
+	private static volatile AtomicLong count = new AtomicLong();
+	
 	public static void start(){
 		executor.scheduleAtFixedRate(new Runnable() {
 			
@@ -26,17 +34,46 @@ class AsyncDBTaskManager {
 	 * 执行入库入理
 	 */
 	private static void run(){
-		AsyncDbObj obj;
+		AsyncDbObj obj = null;
 		try {
-			obj = queue.take();
-			obj.asyncUpdate();
-		} catch (InterruptedException e) {
-			//e.printStackTrace();
+			obj = queue.peek();
+			if(obj==null){
+				return;
+			}
+			boolean bol = obj.asyncUpdate();
+			if(!bol){
+				FileUtil.append(obj.getNum()+spliter+getSql(obj), "recoder_err.sql");
+			}
+		} catch (Exception e) {
+			if(obj!=null){
+				FileUtil.append(obj.getNum()+spliter+getSql(obj), "recoder_err.sql");
+			}
+		}finally{
+			if(obj!=null){
+				queue.remove();
+			}
 		}
 		
 	}
 	
 	public static void add(AsyncDbObj obj){
+		//TODO 先记录到文件再添加到队列中，文件日志作为恢复数据的依据
+		long num = count.getAndIncrement();
+		obj.setNum(num);
+		FileUtil.append(obj.getNum()+spliter+getSql(obj), "recoder.sql");
 		queue.add(obj);
+	}
+	
+	private static String getSql(AsyncDbObj obj){
+		String sql = obj.getSql();
+		Object[] params = obj.getParams(obj.getUpdateFileds());
+		for(Object obj1:params){
+			if(obj1.getClass().getTypeName().equals("java.lang.String")){
+				sql = sql.replace("?", "'"+obj1.toString()+"'");
+			}else{
+				sql = sql.replace("?", obj1.toString());
+			}
+		}
+		return sql;
 	}
 }

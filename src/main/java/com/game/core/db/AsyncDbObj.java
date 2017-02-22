@@ -10,4 +10,15 @@ public interface AsyncDbObj {
 	public Object[] getParams(String fields);
 	void setSql(String sql);
 	public String getSql();
+	
+	/**
+	 * 在队列中的编号
+	 * @param num
+	 */
+	public void setNum(long num);
+	/**
+	 * 在队列中的编号
+	 * @return
+	 */
+	public long getNum();
 }

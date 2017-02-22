@@ -7,6 +7,20 @@ public abstract class AbstractAsyncDbObject implements AsyncDbObj {
 	private OperatorType type;
 	protected String sql;
 	protected String updateFileds;
+	private long num;
+	
+	
+	@Override
+	public long getNum() {
+		// TODO Auto-generated method stub
+		return num;
+	}
+	
+	@Override
+	public void setNum(long num) {
+		this.num = num;
+	}
+	
 	@Override
 	public void setType(OperatorType type) {
 		this.type = type;
@@ -60,7 +74,9 @@ public abstract class AbstractAsyncDbObject implements AsyncDbObj {
 	
 	@Override
 	public void setSql(String sql) {
-		this.sql = sql;
+		String[] args = sql.split(":");
+		this.sql = args[0];
+		this.updateFileds = args[1];
 	}
 
 	@Override
