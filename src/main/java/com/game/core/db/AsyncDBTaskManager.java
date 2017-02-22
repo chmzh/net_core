@@ -48,7 +48,7 @@ class AsyncDBTaskManager {
 				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_err.sql");
 			}else{
 				//FileUtil.append(obj.getNum()+spliter+getSql(obj), obj.getDate()+"recoder_suc.sql");
-				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"recoder_suc.sql");
+				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_suc.sql");
 			}
 		} catch (Exception e) {
 			//TODO报警 通知管理员
