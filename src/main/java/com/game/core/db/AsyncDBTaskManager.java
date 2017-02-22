@@ -1,5 +1,6 @@
 package com.game.core.db;
 
+import java.io.File;
 import java.util.Spliterator;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -7,17 +8,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.game.core.utils.DateTimeUtil;
 import com.game.core.utils.FileUtil;
 
 class AsyncDBTaskManager {
 	
 	private final static String spliter = "@*@#(@)";
-	
+	private final static String Semicolon = ";";
 	private final static ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 	
 	private final static LinkedBlockingQueue<AsyncDbObj> queue = new LinkedBlockingQueue<AsyncDbObj>();
 	
-	private static volatile AtomicLong count = new AtomicLong();
+	private static volatile AtomicLong NUM = new AtomicLong();
 	
 	public static void start(){
 		executor.scheduleAtFixedRate(new Runnable() {
@@ -42,11 +44,16 @@ class AsyncDBTaskManager {
 			}
 			boolean bol = obj.asyncUpdate();
 			if(!bol){
-				FileUtil.append(obj.getNum()+spliter+getSql(obj), "recoder_err.sql");
+				//FileUtil.append(obj.getNum()+spliter+getSql(obj), obj.getDate()+"recoder_err.sql");
+				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_err.sql");
+			}else{
+				//FileUtil.append(obj.getNum()+spliter+getSql(obj), obj.getDate()+"recoder_suc.sql");
+				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"recoder_suc.sql");
 			}
 		} catch (Exception e) {
 			if(obj!=null){
-				FileUtil.append(obj.getNum()+spliter+getSql(obj), "recoder_err.sql");
+				//FileUtil.append(obj.getNum()+spliter+getSql(obj), obj.getDate()+"_recoder_err.sql");
+				FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder_err.sql");
 			}
 		}finally{
 			if(obj!=null){
@@ -58,9 +65,11 @@ class AsyncDBTaskManager {
 	
 	public static void add(AsyncDbObj obj){
 		//TODO 先记录到文件再添加到队列中，文件日志作为恢复数据的依据
-		long num = count.getAndIncrement();
+		long num = NUM.getAndIncrement();
 		obj.setNum(num);
-		FileUtil.append(obj.getNum()+spliter+getSql(obj), "recoder.sql");
+		obj.setDate(DateTimeUtil.curDateTime());
+		//FileUtil.append(obj.getNum()+spliter+getSql(obj), obj.getDate()+"_recoder.sql");
+		FileUtil.append(getSql(obj)+Semicolon, obj.getDate()+"_recoder.sql");
 		queue.add(obj);
 	}
 	

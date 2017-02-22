@@ -1,7 +1,7 @@
 package com.game.core.db;
 
 public interface AsyncDbObj {
-	boolean asyncUpdate();
+	boolean asyncUpdate() throws RuntimeException;
 	OperatorType getType();
 	
 	void setType(OperatorType type);
