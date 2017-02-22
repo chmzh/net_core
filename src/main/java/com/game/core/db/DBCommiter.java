@@ -1,7 +1,11 @@
 package com.game.core.db;
 
 public class DBCommiter {
-	public void commit(AsyncDbObj obj){
+	public static void commit(AsyncDbObj obj){
 		AsyncDBTaskManager.add(obj);
+	}
+	
+	public static void startTask(){
+		AsyncDBTaskManager.start();
 	}
 }

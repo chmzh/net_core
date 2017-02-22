@@ -1,14 +1,13 @@
 package com.game.core.db;
 
 public interface AsyncDbObj {
-	boolean async();
+	boolean asyncUpdate();
 	OperatorType getType();
 	
 	void setType(OperatorType type);
 	
-	void setParams(Object[] params);
-	public Object[] getParams();
-	
+	public String getUpdateFileds();
+	public Object[] getParams(String fields);
 	void setSql(String sql);
 	public String getSql();
 }

@@ -16,7 +16,7 @@ class AsyncDBTaskManager {
 			
 			@Override
 			public void run() {
-				run();
+				AsyncDBTaskManager.run();
 				
 			}
 		}, 0, 2, TimeUnit.SECONDS);
@@ -25,9 +25,15 @@ class AsyncDBTaskManager {
 	/**
 	 * 执行入库入理
 	 */
-	public static void run(){
-		AsyncDbObj obj = queue.poll();
-		obj.async();
+	private static void run(){
+		AsyncDbObj obj;
+		try {
+			obj = queue.take();
+			obj.asyncUpdate();
+		} catch (InterruptedException e) {
+			//e.printStackTrace();
+		}
+		
 	}
 	
 	public static void add(AsyncDbObj obj){
