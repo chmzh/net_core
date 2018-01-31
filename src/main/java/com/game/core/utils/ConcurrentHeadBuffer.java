@@ -17,7 +17,6 @@
  *
  * ============================================================================
  */
-package com.underthehood.weblogs.utils;
 
 import java.util.Comparator;
 import java.util.concurrent.atomic.AtomicReferenceArray;
